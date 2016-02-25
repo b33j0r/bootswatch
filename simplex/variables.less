@@ -14,11 +14,11 @@
 @gray-light:             #808080;
 @gray-lighter:           #ddd;
 
-@brand-primary:         #D9230F;
+@brand-primary:         #25457d; //#D9230F;
 @brand-success:         #469408;
 @brand-info:            #029ACF;
-@brand-warning:         #9B479F;
-@brand-danger:          #D9831F;
+@brand-warning:         #D9831F; //#9B479F;
+@brand-danger:          #D9230F; //#D9831F;
 
 
 //== Scaffolding
@@ -364,16 +364,16 @@
 @navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
 @navbar-collapse-max-height:       340px;
 
-@navbar-default-color:             @gray;
-@navbar-default-bg:                #fff;
-@navbar-default-border:            darken(@navbar-default-bg, 6.5%);
+@navbar-default-color:             white;
+@navbar-default-bg:                @brand-primary;
+@navbar-default-border:            red; //darken(@navbar-default-bg, 6.5%);
 
 // Navbar links
-@navbar-default-link-color:                @gray;
-@navbar-default-link-hover-color:          @brand-primary;
+@navbar-default-link-color:                lighten(@brand-primary, 50%);
+@navbar-default-link-hover-color:          white;
 @navbar-default-link-hover-bg:             transparent;
-@navbar-default-link-active-color:         @navbar-default-link-hover-color;
-@navbar-default-link-active-bg:            transparent;
+@navbar-default-link-active-color:         white; //@navbar-default-link-hover-color;
+@navbar-default-link-active-bg:            #c92528; //red;
 @navbar-default-link-disabled-color:       #444;
 @navbar-default-link-disabled-bg:          transparent;
 
