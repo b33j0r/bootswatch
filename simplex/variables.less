@@ -14,7 +14,7 @@
 @gray-light:             #808080;
 @gray-lighter:           #ddd;
 
-@brand-primary:         #25457d; //#D9230F;
+@brand-primary:         #cf302e; //#D9230F;
 @brand-success:         #469408;
 @brand-info:            #029ACF;
 @brand-warning:         #D9831F; //#9B479F;
@@ -48,7 +48,7 @@
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        @font-family-sans-serif;
 
-@font-size-base:          13px;
+@font-size-base:          14px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
 
@@ -364,16 +364,16 @@
 @navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
 @navbar-collapse-max-height:       340px;
 
-@navbar-default-color:             white;
-@navbar-default-bg:                @brand-primary;
+@navbar-default-color:             @brand-primary;
+@navbar-default-bg:                white;
 @navbar-default-border:            red; //darken(@navbar-default-bg, 6.5%);
 
 // Navbar links
-@navbar-default-link-color:                lighten(@brand-primary, 50%);
-@navbar-default-link-hover-color:          white;
+@navbar-default-link-color:                gray; //lighten(@brand-primary, 50%);
+@navbar-default-link-hover-color:          @brand-primary;
 @navbar-default-link-hover-bg:             transparent;
-@navbar-default-link-active-color:         white; //@navbar-default-link-hover-color;
-@navbar-default-link-active-bg:            #c92528; //red;
+@navbar-default-link-active-color:         @brand-primary; //@navbar-default-link-hover-color;
+@navbar-default-link-active-bg:            white; //red;
 @navbar-default-link-disabled-color:       #444;
 @navbar-default-link-disabled-bg:          transparent;
 
@@ -500,13 +500,13 @@
 @state-success-bg:               #dff0d8;
 @state-success-border:           darken(spin(@state-success-bg, -10), 5%);
 
-@state-info-text:                #3a87ad;
-@state-info-bg:                  #d9edf7;
-@state-info-border:              darken(spin(@state-info-bg, -10), 7%);
+@state-info-text: #6e6d6d;
+@state-info-bg: #d3e4f7;
+@state-info-border:              #6e6d6d;
 
-@state-warning-text:             #c09853;
-@state-warning-bg:               #fcf8e3;
-@state-warning-border:           darken(spin(@state-warning-bg, -10), 3%);
+@state-warning-text: #a68348;
+@state-warning-bg: #f6fcb9;
+@state-warning-border:           #a68348;
 
 @state-danger-text:              #b94a48;
 @state-danger-bg:                #f2dede;
@@ -829,8 +829,8 @@
 //
 //##
 
-@code-color:                  #c7254e;
-@code-bg:                     #f9f2f4;
+@code-color: #6e6867;
+@code-bg:                     transparent;
 
 @kbd-color:                   #fff;
 @kbd-bg:                      #333;

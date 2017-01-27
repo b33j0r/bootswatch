@@ -872,6 +872,989 @@
         <div class="row">
           <div class="col-lg-12">
             <h2>Alerts</h2>
+            <div>
+              <div class="section" id="getting-started-mac-linux">
+                <h1>Getting Started (Mac/Linux)<a class="headerlink" href="#getting-started-mac-linux" title="Permalink to this headline">¶</a></h1>
+                <div class="admonition note alert alert-info">
+                  <p class="first admonition-title">Note</p>
+                  <p class="last">When following these steps, replace <code class="docutils literal"><span class="pre">mypos</span></code> with the actual name of your agent integration.</p>
+                </div>
+                <div class="section" id="prerequisites">
+                  <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+                  <p>Before we get started, we need to bootstrap our environment with a few tools.</p>
+                  <div class="section" id="python">
+                    <h3>python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+                    <p>The Omnivore POS Agent SDK is developed using Python 2.7.9. Python 3 is not
+                      supported. To verify that you’re running a compatible python version, type this command at a shell prompt:</p>
+                    <div class="highlight-default"><div class="highlight"><pre><span></span>$ python --version
+Python 2.7.9
+</pre></div>
+                    </div>
+                    <p>If you don’t have it installed, or have another version, please download and install it from
+                      the <a class="reference external" href="https://www.python.org/downloads/release/python-279/">Python 2.7.9 Release Page</a>.</p>
+                  </div>
+                  <div class="section" id="vc-for-python-2-7-windows-only">
+                    <h3>VC++ for Python 2.7 (Windows Only)<a class="headerlink" href="#vc-for-python-2-7-windows-only" title="Permalink to this headline">¶</a></h3>
+                    <p>To install many popular third-party python packages, a C++ compiler is needed. On unix and macOS systems, a compiler is usually available by default. On Windows, a very specific version of the Microsoft Visual C++ compiler is required.</p>
+                    <p>Since this compiler is no longer available commercially, Microsoft has made the <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=44266">Microsoft Visual C++ Compiler for Python 2.7</a> available for free. You can safely install it along other installations of Visual Studio.</p>
+                    <p>You should install this <em>after</em> installing Python 2.7.9, but <em>before</em> installing any other dependencies.</p>
+                  </div>
+                  <div class="section" id="git">
+                    <h3>git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h3>
+                    <p>You will also need to install <a class="reference external" href="https://git-scm.com/downloads">git</a>, if you don’t already have it.</p>
+                    <div class="admonition note alert alert-info">
+                      <p class="first admonition-title">Note</p>
+                      <p class="last">If you aren’t familiar with <code class="docutils literal"><span class="pre">git</span></code>, consider walking through the quick interactive tutorial, <a class="reference external" href="https://try.github.io">Try Git</a>.</p>
+                    </div>
+                  </div>
+                  <div class="section" id="pip">
+                    <h3>pip<a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h3>
+                    <p><code class="docutils literal"><span class="pre">pip</span></code> is the most popular and robust package manager for python. Modern python installers will automatically install it, but you should ensure that you have it:</p>
+                    <div class="highlight-default"><div class="highlight"><pre><span></span>$ pip --version
+pip 8.1.2 from {some-path}/site-packages (python 2.7)
+</pre></div>
+                    </div>
+                    <p>If that command fails (or the indicated <em>python</em> version is not 2.7), you can <a class="reference external" href="https://pip.pypa.io/en/stable/installing/#do-i-need-to-install-pip">learn how to install pip here</a>. Once you have pip installed, you should upgrade it, along with a package it uses called <code class="docutils literal"><span class="pre">setuptools</span></code>:</p>
+                    <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">setuptools</span> <span class="n">pip</span>
+</pre></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="section" id="creating-a-virtual-environment">
+                  <h2>Creating a Virtual Environment<a class="headerlink" href="#creating-a-virtual-environment" title="Permalink to this headline">¶</a></h2>
+                  <p>A virtual environment is a directory which contains a completely independent installation of python, including the standard library, any third-party dependencies that you install, and a collection of tools. They’re great because they don’t modify your system installation of python–when anything goes wrong, you can always delete and recreate a virtual environment.</p>
+                  <div class="admonition note alert alert-info">
+                    <p class="first admonition-title">Note</p>
+                    <p>There are two widely-used approaches to storing virtual environments within your filesystem:</p>
+                    <ul class="simple">
+                      <li>Some people put all of them in one directory (e.g. <code class="docutils literal"><span class="pre">~/.virtualenvs</span></code> or <code class="docutils literal"><span class="pre">C:\virtualenvs</span></code>).</li>
+                      <li>Others put them adjacent to their project code (e.g. <code class="docutils literal"><span class="pre">~/myproject/env</span></code> or <code class="docutils literal"><span class="pre">C:\myproject\env</span></code>).</li>
+                    </ul>
+                    <p class="last">It’s largely a personal preference, so use whatever you’re comfortable with. For the purpose of this guide, we’ll create it near the project directory.</p>
+                  </div>
+                  <p>To get started, use <code class="docutils literal"><span class="pre">pip</span></code> to install the tool:</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">virtualenv</span>
+</pre></div>
+                  </div>
+                  <p>We’ll create a directory for our projects, then create the virtual environment inside of it. Note that the <code class="docutils literal"><span class="pre">virtualenv</span></code> command specifies the path, as well as the name of the virtual environment we’re creating (in this case, <code class="docutils literal"><span class="pre">env</span></code>):</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">~/</span><span class="n">omnivore</span>
+<span class="n">virtualenv</span> <span class="o">~/</span><span class="n">omnivore</span><span class="o">/</span><span class="n">env</span>
+</pre></div>
+                  </div>
+                  <p>To use the newly created environment, we have to “activate” it. This is important enough to repeat: you <strong>must</strong> activate the virtual environment whenever you start a new shell session, tab, window, etc.</p>
+                  <p>An environment is activated by invoking a script inside its <code class="docutils literal"><span class="pre">bin</span></code> directory:</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span>$ source ~/omnivore/env/bin/activate
+(env) $
+</pre></div>
+                  </div>
+                  <p>If everything works, your prompt will change to include the name of the virtualenv, as seen in the last line of the example above.</p>
+                  <div class="admonition warning alert alert-warning">
+                    <p class="first admonition-title">Warning</p>
+                    <p>The remaining steps <strong>must</strong> be run in a shell in which the virtual environment has been activated. If something doesn’t work, verify that <code class="docutils literal"><span class="pre">(env)</span></code> is prepended to your shell prompt.</p>
+                    <p class="last"><strong>For simplicity, the rest of the guide will not show the shell prompt.</strong></p>
+                  </div>
+                </div>
+                <div class="section" id="getting-the-code">
+                  <h2>Getting the Code<a class="headerlink" href="#getting-the-code" title="Permalink to this headline">¶</a></h2>
+                  <p>First, we need to clone the <code class="docutils literal"><span class="pre">agent-common</span></code> repository from git (note that we’re cloning it into a from a repository named <code class="docutils literal"><span class="pre">agent-common-public</span></code>, but into a directory named <code class="docutils literal"><span class="pre">agent-common</span></code>):</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">omnivore</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">omnivore</span><span class="o">-</span><span class="n">io</span><span class="o">/</span><span class="n">agent</span><span class="o">-</span><span class="n">common</span><span class="o">-</span><span class="n">public</span><span class="o">.</span><span class="n">git</span> <span class="n">agent</span><span class="o">-</span><span class="n">common</span>
+</pre></div>
+                  </div>
+                  <p><code class="docutils literal"><span class="pre">agent-common</span></code> contains the SDK libraries that you will use in your integration code. Next, we’ll clone the repository that the Omnivore SDK team has created for your specific integration.</p>
+                  <p>We’ll provide you with your exact GitHub url, but in the example below you should replace <code class="docutils literal"><span class="pre">mypos</span></code> with your POS name:</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">omnivore</span><span class="o">-</span><span class="n">io</span><span class="o">/</span><span class="n">agent</span><span class="o">-</span><span class="n">mypos</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+                  </div>
+                  <p>This creates a directory <code class="docutils literal"><span class="pre">~/omnivore/agent-mypos</span></code>, where you will write custom code to build your integration.</p>
+                </div>
+                <div class="section" id="installing-dependencies">
+                  <h2>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
+                  <p>We’ll use pip and setuptools to install the dependencies into the virtualenv:</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">omnivore</span><span class="o">/</span><span class="n">agent</span><span class="o">-</span><span class="n">common</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+                  </div>
+                  <p>Finally, we need to tell the virtual environment about our project files. Python uses an environment variable called <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>, which is similar to Java’s <code class="docutils literal"><span class="pre">CLASSPATH</span></code>. A virtual environment manages <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> for you, and keeps it up to date. For local code, such as <code class="docutils literal"><span class="pre">agent-common</span></code> and <code class="docutils literal"><span class="pre">agent-mypos</span></code>, we use a <code class="docutils literal"><span class="pre">setup.py</span></code> script instead of <code class="docutils literal"><span class="pre">pip</span></code>.</p>
+                  <div class="admonition note alert alert-info">
+                    <p class="first admonition-title">Note</p>
+                    <p class="last">In documentation for other python projects, you will often see this command invoked as <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code>. However, we do not wish to <code class="docutils literal"><span class="pre">install</span></code> our local projects. Rather, we want the virtual environment to use our latest code as we work on it. Therefore, we use the <code class="docutils literal"><span class="pre">develop</span></code> command.</p>
+                  </div>
+                  <p>First, we’ll run <code class="docutils literal"><span class="pre">setup.py</span></code> for <code class="docutils literal"><span class="pre">agent-common</span></code>:</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">omnivore</span><span class="o">/</span><span class="n">agent</span><span class="o">-</span><span class="n">common</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">develop</span>
+</pre></div>
+                  </div>
+                  <p>Now do the same thing for your POS-specific project:</p>
+                  <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">omnivore</span><span class="o">/</span><span class="n">agent</span><span class="o">-</span><span class="n">mypos</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">develop</span>
+</pre></div>
+                  </div>
+                  <div class="section" id="running-the-integration-tests">
+                    <h3>Running the Integration Tests<a class="headerlink" href="#running-the-integration-tests" title="Permalink to this headline">¶</a></h3>
+                    <p>Now you should be able to run the tests:</p>
+                    <div class="highlight-default"><div class="highlight"><pre><span></span>(omnivore) agent-mypos$ python scripts/test.py --pos-type link
+</pre></div>
+                    </div>
+                    <p>You can also specify -t to change how many tests run. Setting it to -t 1 only runs the tests involved in the first development milestone (basic reads):</p>
+                    <div class="highlight-default"><div class="highlight"><pre><span></span>(omnivore) agent-mypos$ python scripts/test.py --pos-type link -t 1
+</pre></div>
+                    </div>
+                    <p>See <a class="reference internal" href="tests.html#integration-tests"><span class="std std-ref">Integration Tests</span></a> for more information.</p>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="section" id="module-agent_common.v1_0.request_client">
+                <span id="the-request-client"></span><h1>The Request Client<a class="headerlink" href="#module-agent_common.v1_0.request_client" title="Permalink to this headline">¶</a></h1>
+                <dl class="class">
+                  <dt id="agent_common.v1_0.request_client.RequestClient">
+                    <em class="property">class </em><code class="descname">RequestClient</code><span class="sig-paren">(</span><em>config</em>, <em>state</em>, <em>store=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient" title="Permalink to this definition">¶</a></dt>
+                  <dd><p>The primary interface for communicating with the POS system.
+                    When creating an integration, this is the most important interface. It
+                    ultimately provides all of the functionality such as <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.get_tickets" title="agent_common.v1_0.request_client.RequestClient.get_tickets"><code class="xref any py py-meth docutils literal"><span class="pre">get_tickets</span></code></a>,
+                    <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.execute_cash_payment" title="agent_common.v1_0.request_client.RequestClient.execute_cash_payment"><code class="xref any py py-meth docutils literal"><span class="pre">execute_cash_payment</span></code></a>, etc. Unless your integration is trivial, it
+                    is recommended that you make use of other objects to actually perform
+                    these operations (composition/strategy pattern).</p>
+                    <p>Unlike its long-lived parent object, it is created per-request to handle
+                      a specific operation, then it is destroyed. For this reason, transactional
+                      resources should be managed by the <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.set_up" title="agent_common.v1_0.request_client.RequestClient.set_up"><code class="xref any py py-meth docutils literal"><span class="pre">set_up</span></code></a> and <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.tear_down" title="agent_common.v1_0.request_client.RequestClient.tear_down"><code class="xref any py py-meth docutils literal"><span class="pre">tear_down</span></code></a> methods.</p>
+                    <p class="rubric">Client Lifecycle</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.set_up">
+                        <code class="descname">set_up</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.set_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.set_up" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Set up temporary resources here, such as database connections or
+                        short-lived authenticated sessions.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> – Reserved; do not depend on this for state.</td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)">None</a></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.tear_down">
+                        <code class="descname">tear_down</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.tear_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.tear_down" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Use this method to safely clean up any resources that were initialized
+                        by <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.set_up" title="agent_common.v1_0.request_client.RequestClient.set_up"><code class="xref any py py-meth docutils literal"><span class="pre">RequestClient.set_up</span></code></a>.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)">None</a></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <p class="rubric">Simple Reads</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_discounts">
+                        <code class="descname">get_discounts</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_discounts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_discounts" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get the discounts configured on the POS.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of discounts configured on the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.Discount" title="agent_common.v1_0.models.Discount">Discount</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_employees">
+                        <code class="descname">get_employees</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_employees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_employees" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get the employees configured on the POS.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of employees configured on the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.Employee" title="agent_common.v1_0.models.Employee">Employee</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_jobs">
+                        <code class="descname">get_jobs</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_jobs" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get the jobs (often referred to as job codes) configured on the POS.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of job codes/types configured on the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.Job" title="agent_common.v1_0.models.Job">Job</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_order_types">
+                        <code class="descname">get_order_types</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_order_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_order_types" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get the order types configured on the POS (e.g. “take out”, “dine-in”).</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of order types configured on the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.OrderType" title="agent_common.v1_0.models.OrderType">OrderType</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_revenue_centers">
+                        <code class="descname">get_revenue_centers</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_revenue_centers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_revenue_centers" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get the revenue centers configured on the POS for this location
+                        (e.g. “Patio”, “Dining Room”, “Bar”)</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of revenue centers configured on the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.RevenueCenter" title="agent_common.v1_0.models.RevenueCenter">RevenueCenter</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_tables">
+                        <code class="descname">get_tables</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_tables" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get the tables configured on the POS for this location. Most often,
+                        tables are numbered at a location, but they can also have names.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of tables configured on the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.Table" title="agent_common.v1_0.models.Table">Table</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_tender_types">
+                        <code class="descname">get_tender_types</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_tender_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_tender_types" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get the tender types configured on the POS (e.g. “Cash”, “Visa”).</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of tender types configured on the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.TenderType" title="agent_common.v1_0.models.TenderType">TenderType</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <p class="rubric">Menu Reads</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_menu_data">
+                        <code class="descname">get_menu_data</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_menu_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_menu_data" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Return the all menu data for the POS. Since these objects contain
+                        references to each other, it is important that the entire structure
+                        contains no duplicates. For example, if a menu category contains a
+                        menu item, then the same menu item object should be contained in the
+                        list of menu items; it cannot be a copy, nor just an object with the
+                        same id–it must literally be the same object.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="models.html#agent_common.v1_0.models.MenuData" title="agent_common.v1_0.models.MenuData"><code class="xref any py py-class docutils literal"><span class="pre">MenuData</span></code></a>, which contains lists of <a class="reference internal" href="models.html#agent_common.v1_0.models.MenuCategory" title="agent_common.v1_0.models.MenuCategory"><code class="xref any py py-class docutils literal"><span class="pre">MenuCategory</span></code></a>,
+                          <a class="reference internal" href="models.html#agent_common.v1_0.models.MenuItem" title="agent_common.v1_0.models.MenuItem"><code class="xref any py py-class docutils literal"><span class="pre">MenuItem</span></code></a>, <a class="reference internal" href="models.html#agent_common.v1_0.models.MenuModifier" title="agent_common.v1_0.models.MenuModifier"><code class="xref any py py-class docutils literal"><span class="pre">MenuModifier</span></code></a>, and <a class="reference internal" href="models.html#agent_common.v1_0.models.MenuModifierGroup" title="agent_common.v1_0.models.MenuModifierGroup"><code class="xref any py py-class docutils literal"><span class="pre">MenuModifierGroup</span></code></a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.MenuData" title="agent_common.v1_0.models.MenuData">MenuData</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <p class="rubric">Ticket Reads</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_ticket">
+                        <code class="descname">get_ticket</code><span class="sig-paren">(</span><em>ticket_id</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_ticket" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get a ticket from the POS.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) – the ticket id to retrieve</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A ticket from the POS system</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#agent_common.v1_0.agent_exception.AgentException" title="agent_common.v1_0.agent_exception.AgentException"><code class="xref any py py-class docutils literal"><span class="pre">AgentException</span></code></a>, if not found</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_tickets">
+                        <code class="descname">get_tickets</code><span class="sig-paren">(</span><em>filters</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_tickets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_tickets" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get a list of tickets from the POS.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>filters</strong> – TODO</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of tickets from the POS system, optionally filtered by <code class="xref any docutils literal"><span class="pre">filters</span></code>.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_historical_closed_tickets">
+                        <code class="descname">get_historical_closed_tickets</code><span class="sig-paren">(</span><em>start_date</em>, <em>end_date</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_historical_closed_tickets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_historical_closed_tickets" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>If the POS has a separate mechanism for getting tickets from a longer
+                        time ago than those easily exposed by <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.get_tickets" title="agent_common.v1_0.request_client.RequestClient.get_tickets"><code class="xref any py py-meth docutils literal"><span class="pre">get_tickets</span></code></a>, this method returns
+                        those tickets within the specified time range.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+                          <li><strong>start_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><em>datetime.datetime</em></a>) – start of the range of tickets, based on closed_at time.</li>
+                          <li><strong>end_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><em>datetime.datetime</em></a>) – end of the range of tickets, based on closed_at time.</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <div class="admonition note alert alert-info">
+                          <p class="first admonition-title">Note</p>
+                          <p class="last"><code class="xref any docutils literal"><span class="pre">start_date</span></code> &lt; <code class="xref any docutils literal"><span class="pre">end_date</span></code>, <code class="xref any docutils literal"><span class="pre">end_date</span></code> being the more recent date.</p>
+                        </div>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of historical tickets from the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <p class="rubric">Ticket Transactions</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_open_ticket">
+                        <code class="descname">execute_open_ticket</code><span class="sig-paren">(</span><em>ticket</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_open_ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_open_ticket" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Open a new ticket on POS system using specified ticket details.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – <p>A ticket with the following fields populated:</p>
+                            <ul>
+                              <li>auto_send</li>
+                              <li>name</li>
+                              <li>guest_count</li>
+                              <li>employee</li>
+                              <li>employee_id</li>
+                              <li>order_type (if required by controls)</li>
+                              <li>order_type_id (if required by controls)</li>
+                              <li>table (if supplied)</li>
+                              <li>table_id (if supplied)</li>
+                              <li>revenue_center</li>
+                              <li>revenue_center_id</li>
+                            </ul>
+                          </li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The newly-opened ticket, equivalent to <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.get_ticket" title="agent_common.v1_0.request_client.RequestClient.get_ticket"><code class="xref any py py-meth docutils literal"><span class="pre">self.get_ticket(new_ticket_id)</span></code></a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_add_items_to_ticket">
+                        <code class="descname">execute_add_items_to_ticket</code><span class="sig-paren">(</span><em>ticket</em>, <em>items</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_add_items_to_ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_add_items_to_ticket" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Add specified items to a specified ticket in POS system.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object onto which the items are to be added.</li>
+                          <li><strong>items</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketItem" title="agent_common.v1_0.models.TicketItem"><em>TicketItem</em></a><em>]</em><em></em>) – The <a class="reference internal" href="models.html#agent_common.v1_0.models.TicketItem" title="agent_common.v1_0.models.TicketItem"><code class="xref any py py-class docutils literal"><span class="pre">TicketItem</span></code></a> objects to add to the ticket.</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The newly-updated ticket, equivalent to <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.get_ticket" title="agent_common.v1_0.request_client.RequestClient.get_ticket"><code class="xref any py py-meth docutils literal"><span class="pre">self.get_ticket(ticket_id)</span></code></a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_add_discounts_to_ticket">
+                        <code class="descname">execute_add_discounts_to_ticket</code><span class="sig-paren">(</span><em>ticket</em>, <em>discounts</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_add_discounts_to_ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_add_discounts_to_ticket" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Add one or more ticket-level discounts to an existing ticket.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object for which the discount(s) are to be added.</li>
+                          <li><strong>discounts</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketDiscount" title="agent_common.v1_0.models.TicketDiscount"><em>TicketDiscount</em></a><em>]</em><em></em>) – A list of TicketDiscount objects to be added</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Ticket object with items added, equivalent to <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.get_ticket" title="agent_common.v1_0.request_client.RequestClient.get_ticket"><code class="xref any py py-meth docutils literal"><span class="pre">self.get_ticket(ticket.id)</span></code></a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_add_discounts_to_ticket_item">
+                        <code class="descname">execute_add_discounts_to_ticket_item</code><span class="sig-paren">(</span><em>ticket</em>, <em>ticket_item</em>, <em>discounts</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_add_discounts_to_ticket_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_add_discounts_to_ticket_item" title="Permalink to this definition">¶</a></dt>
+                      <dd><table class="field-list table" frame="void" rules="none" border="0">
+                        <colgroup><col class="field-name">
+                          <col class="field-body">
+                        </colgroup><tbody valign="top">
+                      <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                        <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object to which the ticket_item belongs.</li>
+                        <li><strong>ticket_item</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.TicketItem" title="agent_common.v1_0.models.TicketItem"><em>TicketItem</em></a>) – TicketItem common model object onto which the discount(s) are to be added.</li>
+                        <li><strong>discounts</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketItemDiscount" title="agent_common.v1_0.models.TicketItemDiscount"><em>TicketItemDiscount</em></a><em>]</em><em></em>) – A list of TicketItemDiscount objects to be added</li>
+                        <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                        <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                      </ul>
+                      </td>
+                      </tr>
+                      <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Ticket object, equivalent to <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.get_ticket" title="agent_common.v1_0.request_client.RequestClient.get_ticket"><code class="xref any py py-meth docutils literal"><span class="pre">self.get_ticket(ticket.id)</span></code></a></p>
+                      </td>
+                      </tr>
+                      <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a></p>
+                      </td>
+                      </tr>
+                      </tbody>
+                      </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_price_transaction">
+                        <code class="descname">execute_price_transaction</code><span class="sig-paren">(</span><em>items</em>, <em>discounts</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_price_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_price_transaction" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Calculate totals for items/modifiers/discounts as if they were added to a ticket.
+                        This method does not cause a ticket to be created on the POS system.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>items</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketItem" title="agent_common.v1_0.models.TicketItem"><em>TicketItem</em></a><em>]</em><em></em>) – list of items to be price checked.</li>
+                          <li><strong>discounts</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketDiscount" title="agent_common.v1_0.models.TicketDiscount"><em>TicketDiscount</em></a><em>]</em><em></em>) – list of ticket level discounts to be included in the price check.</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An object containing the totals for the specified (unopened) <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketTotals" title="agent_common.v1_0.models.TicketTotals">TicketTotals</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <p class="rubric">Ticket Voiding</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_void_ticket_discounts">
+                        <code class="descname">execute_void_ticket_discounts</code><span class="sig-paren">(</span><em>ticket</em>, <em>discounts</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_void_ticket_discounts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_void_ticket_discounts" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Void one or more ticket-level discounts on an existing ticket.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object for which the discount(s) will be voided.</li>
+                          <li><strong>discounts</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketDiscount" title="agent_common.v1_0.models.TicketDiscount"><em>TicketDiscount</em></a><em>]</em><em></em>) – A list of TicketDiscount objects to be voided</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The ticket after voiding.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#agent_common.v1_0.agent_exception.AgentException" title="agent_common.v1_0.agent_exception.AgentException"><code class="xref any py py-class docutils literal"><span class="pre">AgentException</span></code></a> if unsuccessful</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_void_ticket_item_discounts">
+                        <code class="descname">execute_void_ticket_item_discounts</code><span class="sig-paren">(</span><em>ticket</em>, <em>discounts</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_void_ticket_item_discounts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_void_ticket_item_discounts" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Void one or more item-level discounts on an existing ticket.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object for which the item discount(s) will be voided.</li>
+                          <li><strong>discounts</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketItemDiscount" title="agent_common.v1_0.models.TicketItemDiscount"><em>TicketItemDiscount</em></a><em>]</em><em></em>) – A list of TicketItemDiscount objects to be voided</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The ticket after voiding.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket">Ticket</a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#agent_common.v1_0.agent_exception.AgentException" title="agent_common.v1_0.agent_exception.AgentException"><code class="xref any py py-class docutils literal"><span class="pre">AgentException</span></code></a> if unsuccessful</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_void_ticket_items">
+                        <code class="descname">execute_void_ticket_items</code><span class="sig-paren">(</span><em>ticket</em>, <em>items</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_void_ticket_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_void_ticket_items" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Void one or more items on an existing ticket.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object on which the item(s) will be voided.</li>
+                          <li><strong>items</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a><em>[</em><a class="reference internal" href="models.html#agent_common.v1_0.models.TicketItem" title="agent_common.v1_0.models.TicketItem"><em>TicketItem</em></a><em>]</em><em></em>) – A list of TicketItem objects to be voided</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The ticket after voiding.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">agent_common.v1_0.models.ticket.Ticket</p>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#agent_common.v1_0.agent_exception.AgentException" title="agent_common.v1_0.agent_exception.AgentException"><code class="xref any py py-class docutils literal"><span class="pre">AgentException</span></code></a> if unsuccessful</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_void_ticket">
+                        <code class="descname">execute_void_ticket</code><span class="sig-paren">(</span><em>ticket</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_void_ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_void_ticket" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Void an existing ticket altogether.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object to be voided.</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref any docutils literal"><span class="pre">True</span></code></a> if successful</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></p>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#agent_common.v1_0.agent_exception.AgentException" title="agent_common.v1_0.agent_exception.AgentException"><code class="xref any py py-class docutils literal"><span class="pre">AgentException</span></code></a> if unsuccessful</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_close_ticket">
+                        <code class="descname">execute_close_ticket</code><span class="sig-paren">(</span><em>ticket</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_close_ticket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_close_ticket" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Close a ticket if the operation is supported separately from a payment.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – the <a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><code class="xref any py py-class docutils literal"><span class="pre">Ticket</span></code></a> object to be closed.</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref any docutils literal"><span class="pre">True</span></code></a> if successful</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="exceptions.html#agent_common.v1_0.agent_exception.AgentException" title="agent_common.v1_0.agent_exception.AgentException"><code class="xref any py py-class docutils literal"><span class="pre">AgentException</span></code></a> if unsuccessful</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <p class="rubric">Ticket Payments</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_card_payment">
+                        <code class="descname">execute_card_payment</code><span class="sig-paren">(</span><em>ticket</em>, <em>auto_close</em>, <em>amount</em>, <em>tip</em>, <em>comment</em>, <em>card_data</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_card_payment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_card_payment" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Execute a credit/debit card payment on the POS system, and return a Payment model object.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – Ticket on which we are making a payment.</li>
+                          <li><strong>auto_close</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether or not the ticket should be automatically closed if paid in full</li>
+                          <li><strong>amount</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, excluding tip, to be paid</li>
+                          <li><strong>tip</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, of the tip</li>
+                          <li><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) – A comment to associate with the payment, if supported</li>
+                          <li><strong>card_data</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.CardData" title="agent_common.v1_0.models.CardData"><em>CardData</em></a>) – A CardData object</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment"><code class="xref any py py-class docutils literal"><span class="pre">Payment</span></code></a> with the result of the operation.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment">Payment</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_gift_card_payment">
+                        <code class="descname">execute_gift_card_payment</code><span class="sig-paren">(</span><em>ticket</em>, <em>auto_close</em>, <em>amount</em>, <em>tip</em>, <em>comment</em>, <em>card_data</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_gift_card_payment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_gift_card_payment" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Execute a gift card payment on the POS system, and return a Payment model object.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – Ticket on which we are making a payment.</li>
+                          <li><strong>auto_close</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether or not the ticket should be automatically closed if paid in full</li>
+                          <li><strong>amount</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, excluding tip, to be paid</li>
+                          <li><strong>tip</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, of the tip</li>
+                          <li><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) – A comment to associate with the payment, if supported</li>
+                          <li><strong>card_data</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.CardData" title="agent_common.v1_0.models.CardData"><em>CardData</em></a>) – A CardData object</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment"><code class="xref any py py-class docutils literal"><span class="pre">Payment</span></code></a> with the result of the operation.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment">Payment</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_3rd_party_payment">
+                        <code class="descname">execute_3rd_party_payment</code><span class="sig-paren">(</span><em>ticket</em>, <em>auto_close</em>, <em>amount</em>, <em>tip</em>, <em>comment</em>, <em>tender_type</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_3rd_party_payment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_3rd_party_payment" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Execute a third party payment on the POS system, and return a Payment model object.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – Ticket on which we are making a payment.</li>
+                          <li><strong>auto_close</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether or not the ticket should be automatically closed if paid in full</li>
+                          <li><strong>amount</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, excluding tip, to be paid</li>
+                          <li><strong>tip</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, of the tip</li>
+                          <li><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) – A comment to associate with the payment, if supported</li>
+                          <li><strong>tender_type</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.TenderType" title="agent_common.v1_0.models.TenderType"><em>TenderType</em></a>) – The TenderType model with which to associate the payment</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment"><code class="xref any py py-class docutils literal"><span class="pre">Payment</span></code></a> with the result of the operation.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment">Payment</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.execute_cash_payment">
+                        <code class="descname">execute_cash_payment</code><span class="sig-paren">(</span><em>ticket</em>, <em>auto_close</em>, <em>amount</em>, <em>tip</em>, <em>comment</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.execute_cash_payment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.execute_cash_payment" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Execute a cash payment on the POS system, and return a Payment model object.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>ticket</strong> (<a class="reference internal" href="models.html#agent_common.v1_0.models.Ticket" title="agent_common.v1_0.models.Ticket"><em>Ticket</em></a>) – Ticket on which we are making a payment.</li>
+                          <li><strong>auto_close</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether or not the ticket should be automatically closed if paid in full</li>
+                          <li><strong>amount</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, excluding tip, to be paid</li>
+                          <li><strong>tip</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The amount, in cents, of the tip</li>
+                          <li><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) – A comment to associate with the payment, if supported</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment"><code class="xref any py py-class docutils literal"><span class="pre">Payment</span></code></a> with the result of the operation.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.Payment" title="agent_common.v1_0.models.Payment">Payment</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <p class="rubric">Time and Attendance Reads</p>
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_clock_entry">
+                        <code class="descname">get_clock_entry</code><span class="sig-paren">(</span><em>clock_entry_id</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_clock_entry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_clock_entry" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get a clock entry by id.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>clock_entry_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#basestring" title="(in Python v2.7)"><em>basestring</em></a>) – The clock_entry id to fetch</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A clock entry from the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="models.html#agent_common.v1_0.models.ClockEntry" title="agent_common.v1_0.models.ClockEntry">ClockEntry</a></p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_clock_entries">
+                        <code class="descname">get_clock_entries</code><span class="sig-paren">(</span><em>filters</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_clock_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_clock_entries" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>Get a list of clock entries.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>filters</strong> – TODO</li>
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of clock entries from the POS system, optionally filtered by <code class="xref any docutils literal"><span class="pre">filters</span></code>.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.ClockEntry" title="agent_common.v1_0.models.ClockEntry">ClockEntry</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                    <dl class="method">
+                      <dt id="agent_common.v1_0.request_client.RequestClient.get_historical_clock_entries">
+                        <code class="descname">get_historical_clock_entries</code><span class="sig-paren">(</span><em>start_date</em>, <em>end_date</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/agent_common/v1_0/request_client.html#RequestClient.get_historical_clock_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent_common.v1_0.request_client.RequestClient.get_historical_clock_entries" title="Permalink to this definition">¶</a></dt>
+                      <dd><p>If the POS has a separate mechanism for getting clock entries from a longer
+                        time ago than those easily exposed by <a class="reference internal" href="#agent_common.v1_0.request_client.RequestClient.get_clock_entries" title="agent_common.v1_0.request_client.RequestClient.get_clock_entries"><code class="xref any py py-meth docutils literal"><span class="pre">get_clock_entries</span></code></a>, this method returns
+                        those clock entries within the specified time range.</p>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+                          <li><strong>start_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><em>datetime.datetime</em></a>) – start of the range of clock entries.</li>
+                          <li><strong>end_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><em>datetime.datetime</em></a>) – end of the range of clock entries.</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        <dl class="docutils">
+                          <dt>..note::</dt>
+                          <dd>start_date &lt; end_date, end_date being the more recent date.</dd>
+                        </dl>
+                        <table class="field-list table" frame="void" rules="none" border="0">
+                          <colgroup><col class="field-name">
+                            <col class="field-body">
+                          </colgroup><tbody valign="top">
+                        <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+                          <li><strong>args</strong> – Reserved for future use (do not use)</li>
+                          <li><strong>kwargs</strong> – Reserved for future use (do not use)</li>
+                        </ul>
+                        </td>
+                        </tr>
+                        <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of historical clock entries from the POS system.</p>
+                        </td>
+                        </tr>
+                        <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>[<a class="reference internal" href="models.html#agent_common.v1_0.models.ClockEntry" title="agent_common.v1_0.models.ClockEntry">ClockEntry</a>]</p>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      </dd></dl>
+
+                  </dd></dl>
+
+              </div>
+
+            </div>
             <div class="bs-component">
               <div class="alert alert-dismissible alert-warning">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
